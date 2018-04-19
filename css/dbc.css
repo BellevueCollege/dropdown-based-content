@@ -1,0 +1,121 @@
+
+/* .combo-wrap {
+	position: relative;
+	display: inline-block;
+} */
+
+/* .combobox {
+	 width: 250px; 
+	padding: 10px 35px 10px 5px;
+	border: 1px solid #fff;
+	box-sizing: border-box;
+	position: relative;
+	font-size: 14px;
+	text-align: left;
+	background-color: #fff;
+	color: #212E59;
+	box-shadow: 0 0 5px #000;
+} */
+
+
+
+.listbox {
+	display: none;
+	position: absolute;
+	top: 40px; /* the height of the input */
+	left: 0;
+	width: 250px;
+	box-sizing: border-box;
+	padding: 0;
+	background: #fff;
+	z-index: 99;
+	text-align: left;
+	box-shadow: 0 3px 12px #000;
+	max-height: 250px;
+	overflow-y: auto;
+}
+
+.listbox.open {
+	display: block;
+}
+
+.listbox .option {
+	padding: 4px 6px;
+	cursor: default;
+}
+
+.listbox .option.selected {
+	color: #fff;
+	background-color: forestgreen;
+}
+
+.listbox .option.active {
+	color: #fff;
+	background-color: #212E59;
+}
+
+.listbox .underline {
+	text-decoration: underline;
+}
+
+.multiselect .option:before,
+.multiselect-with-groups .option:before {
+	content: '';
+	display:inline-block;
+	width: 13px;
+	height: 13px;
+	border: 2px solid #ddd;
+	margin-right: 7px;
+}
+
+.multiselect .option:after,
+.multiselect-with-groups .option:after {
+	/*Add another block-level blank space*/
+	content: '';
+	display: none;
+	margin: 2px auto;
+
+	/*Make it a small rectangle so the border will create an L-shape*/
+	width: 4px;
+	height: 10px;
+
+	/*Add a white border on the bottom and left, creating that 'L' */
+	border: solid #fff;
+	border-width: 0 2px 2px 0;
+
+	/*Rotate the L 45 degrees to turn it into a checkmark*/
+	transform: rotate(45deg);
+}
+
+.multiselect .option.selected:after,
+.multiselect-with-groups .option.selected:after {
+	display:inline-block;
+	left: 12px;
+	position: absolute;
+}
+
+.optgroup-label {
+	font-weight: bold;
+	font-size: 22px;
+	border-bottom: 5px solid;
+}
+
+
+
+
+.combobox.form-control {
+	height: 46px;
+	padding: 10px 16px;
+	font-size: 18px;
+	line-height: 1.3333333;
+	border-radius: 6px;
+	background: transparent;
+}
+
+/* .trigger {
+	float: right;
+	font-size: 19px;
+	padding: 10px 10px;
+	color: #555;
+	background: red;
+} */
