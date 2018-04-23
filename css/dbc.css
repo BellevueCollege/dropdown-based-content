@@ -6,11 +6,15 @@
 
 	width: 500px;
 	box-sizing: border-box;
-	padding: 0;
 	background: #fff;
 	z-index: 99;
 	text-align: left;
-	box-shadow: 0 3px 12px #000;
+	box-shadow: 0 6px 12px rgba(0,0,0,.175);
+	border: 1px solid #ccc;
+	border-bottom-left-radius: 6px;
+	border-bottom-right-radius: 6px;
+
+	border-top-width: 0;
 	max-height: 250px;
 	overflow-y: auto;
 }
@@ -20,68 +24,34 @@
 }
 
 .listbox .option {
-	padding: 4px 6px;
+	padding: .5em 1em .5em 1.5em;
 	cursor: default;
 }
 
 .listbox .option.selected {
-	color: #fff;
-	background-color: forestgreen;
+	color: #000;
+	background-color: #A7A9AC;
+}
+.listbox .option.selected::before {
+	margin-left: -1rem;
+	width: 1.5rem;
+	content: '✔️ ';
+	font-size: .5em;
 }
 
 .listbox .option.active {
 	color: #fff;
-	background-color: #212E59;
+	background-color: #003D79;
 }
 
 .listbox .underline {
 	text-decoration: underline;
 }
 
-.multiselect .option:before,
-.multiselect-with-groups .option:before {
-	content: '';
-	display:inline-block;
-	width: 13px;
-	height: 13px;
-	border: 2px solid #ddd;
-	margin-right: 7px;
-}
-
-.multiselect .option:after,
-.multiselect-with-groups .option:after {
-	/*Add another block-level blank space*/
-	content: '';
-	display: none;
-	margin: 2px auto;
-
-	/*Make it a small rectangle so the border will create an L-shape*/
-	width: 4px;
-	height: 10px;
-
-	/*Add a white border on the bottom and left, creating that 'L' */
-	border: solid #fff;
-	border-width: 0 2px 2px 0;
-
-	/*Rotate the L 45 degrees to turn it into a checkmark*/
-	transform: rotate(45deg);
-}
-
-.multiselect .option.selected:after,
-.multiselect-with-groups .option.selected:after {
-	display:inline-block;
-	left: 12px;
-	position: absolute;
-}
-
 .optgroup-label {
-	font-weight: bold;
-	font-size: 22px;
-	border-bottom: 5px solid;
+	font-size: 1.25em;
+	border-bottom: 1px solid;
 }
-
-
-
 
 .combobox.form-control {
 	height: 46px;
@@ -91,11 +61,3 @@
 	border-radius: 6px;
 	background: transparent;
 }
-
-/* .trigger {
-	float: right;
-	font-size: 19px;
-	padding: 10px 10px;
-	color: #555;
-	background: red;
-} */
