@@ -61,3 +61,10 @@
 	border-radius: 6px;
 	background: transparent;
 }
+
+.dbc-content {
+	display: none;
+}
+.dbc-content.open {
+	display: block;
+}

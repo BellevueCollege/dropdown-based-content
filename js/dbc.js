@@ -58,7 +58,17 @@ combobo
 		
 		element.classList.remove( combobo.config.activeClass );
 		
+	})
+	.on('selection', function ( e ) {
+		var targetID = e.option.getAttribute('data-target') ? e.option.getAttribute('data-target') : 'dbc-content-default';
+		document.getElementById('dbc-combobox-action').setAttribute('data-target', targetID);
+
+	})
+	.on('deselection', function () {
+		document.getElementById('dbc-combobox-action').removeAttribute('data-target');
 	});
+
+
 
 /**
  * Set list width
@@ -67,7 +77,22 @@ function setListWidth() {
 	var listWidth = document.querySelector(combobo.config.input).offsetWidth;
 	var triggerWidth = document.getElementById(combobo.config.listTriggerID).offsetWidth;
 	document.querySelector('.listbox').style.width = ( listWidth + triggerWidth - 8 ) + 'px';
-	console.log('width set');
 }
 window.addEventListener('resize', setListWidth);
 setListWidth();
+
+
+document.getElementById('dbc-combobox-action').addEventListener("click", function (e) {
+	var previouslyOpen = document.querySelector('.dbc-content.open');
+
+	if ( previouslyOpen ) {
+		previouslyOpen.classList.remove('open');
+	}
+
+	var targetID = document.getElementById('dbc-combobox-action').getAttribute('data-target');
+	
+	if (targetID) {
+		document.getElementById(targetID).classList.add('open');
+	}
+	
+});
