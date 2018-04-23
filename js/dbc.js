@@ -20,7 +20,7 @@ var combobo = new Combobo({
 
 
 
-document.getElementById('open-combobox').addEventListener("click", function ( e ) {
+document.getElementById( 'open-combobox' ).addEventListener( "click", function ( e ) {
 	e.stopPropagation();
 
 	if ( combobo.isOpen ) {
@@ -29,3 +29,20 @@ document.getElementById('open-combobox').addEventListener("click", function ( e 
 		combobo.openList();
 	}
 });
+
+combobo
+	.on('list:open', function () {
+		var element = document.getElementById('open-combobox');
+		element.firstChild.classList.remove('glyphicon-menu-down');
+		element.firstChild.classList.add('glyphicon-menu-up');
+
+		element.classList.add('active');
+	})
+	.on('list:close', function () {
+		var element = document.getElementById('open-combobox');
+		element.firstChild.classList.remove('glyphicon-menu-up');
+		element.firstChild.classList.add('glyphicon-menu-down');
+		
+		element.classList.remove('active');
+		
+	});
