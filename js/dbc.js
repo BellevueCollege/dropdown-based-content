@@ -61,11 +61,15 @@ combobo
 	})
 	.on('selection', function ( e ) {
 		var targetID = e.option.getAttribute('data-target') ? e.option.getAttribute('data-target') : 'dbc-content-default';
-		document.getElementById('dbc-combobox-action').setAttribute('data-target', targetID);
+		var submitButton = document.getElementById('dbc-combobox-action');
+		submitButton.setAttribute('data-target', targetID);
+		submitButton.classList.remove('disabled');
 
 	})
 	.on('deselection', function () {
-		document.getElementById('dbc-combobox-action').removeAttribute('data-target');
+		var submitButton = document.getElementById('dbc-combobox-action');
+		submitButton.removeAttribute('data-target');
+		submitButton.classList.add('disabled');
 	});
 
 
