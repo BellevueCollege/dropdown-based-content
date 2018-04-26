@@ -33,9 +33,12 @@ document.getElementById( combobo.config.listTriggerID ).addEventListener( "click
 	e.stopPropagation();
 
 	if ( combobo.isOpen ) {
+		//document.getElementById(combobo.config.listTriggerID).focus();
 		combobo.closeList();
+
 	} else {
 		combobo.openList();
+
 	}
 });
 
@@ -46,17 +49,24 @@ document.getElementById( combobo.config.listTriggerID ).addEventListener( "click
 combobo
 	.on('list:open', function () {
 		var element = document.getElementById( combobo.config.listTriggerID );
-		element.firstChild.classList.remove( combobo.config.listTriggerClosedClass );  //down
-		element.firstChild.classList.add( combobo.config.listTriggerOpenClass );  //up
 
-		element.classList.add(combobo.config.activeClass);
+		element.querySelector('span').classList.replace(
+			combobo.config.listTriggerClosedClass,
+			combobo.config.listTriggerOpenClass
+		);
+
+		element.classList.toggle(combobo.config.activeClass, true);
+
 	})
 	.on('list:close', function () {
 		var element = document.getElementById( combobo.config.listTriggerID );
-		element.firstChild.classList.remove( combobo.config.listTriggerOpenClass );  //up
-		element.firstChild.classList.add( combobo.config.listTriggerClosedClass );  //down
+
+		element.querySelector('span').classList.replace(
+			combobo.config.listTriggerOpenClass,
+			combobo.config.listTriggerClosedClass
+		);
 		
-		element.classList.remove( combobo.config.activeClass );
+		element.classList.toggle( combobo.config.activeClass );
 		
 	})
 	.on('selection', function ( e ) {
@@ -85,7 +95,9 @@ function setListWidth() {
 window.addEventListener('resize', setListWidth);
 setListWidth();
 
-
+/**
+ * Display content associated with option
+ */
 document.getElementById('dbc-combobox-action').addEventListener("click", function (e) {
 	var previouslyOpen = document.querySelector('.dbc-content.open');
 
@@ -94,9 +106,10 @@ document.getElementById('dbc-combobox-action').addEventListener("click", functio
 	}
 
 	var targetID = document.getElementById('dbc-combobox-action').getAttribute('data-target');
+	var element = document.getElementById(targetID);
 	
-	if (targetID) {
-		document.getElementById(targetID).classList.add('open');
+	if ( element ) {
+		element.classList.add('open');
 	}
 	
 });

@@ -10,16 +10,13 @@ GitHub Plugin URI: BellevueCollege/dropdown-based-content
 */
 defined( 'ABSPATH' ) || exit;
 
-
-
-
-
 /**
  * Add Subresource Integrity - adapted from https://ikreativ.com/async-with-wordpress-enqueue/
  *
  * Allow insertion of SRI integrity tag. Add #addsri=HASH to add this feature.
  */
 add_filter( 'clean_url', 'dbc_add_sri', 11, 1 );
+
 function dbc_add_sri( $url ) {
 	if ( strpos( $url, '#addsri' ) ) {
 		return preg_replace( '/#addsri=(.*)\Z/i', "' integrity='$1", $url ) . "' crossorigin='anonymous";
@@ -29,66 +26,74 @@ function dbc_add_sri( $url ) {
 }
 
 /**
- * Enqueue Scripts and Styles 
+ * Register Scripts and Styles
  */
-add_action( 'wp_enqueue_scripts', 'dbc_scripts' );
-function dbc_scripts() {
-	wp_enqueue_style( 'dbc-style', plugin_dir_url( __FILE__ ) . 'css/dbc.css', null, rand() ); // REMOVE RAND BEFORE RELEASE!
-	wp_enqueue_script( 'combobo', 'https://unpkg.com/combobo@2.0.1/dist/combobo.js#addsri=sha384-Wi4+N8V0Z6wGoSZO9v6BJtfdBVOWZPUOueHKSQ6UKforJpdw9Ic/GmkszhdKBIUi', array(), '2.0.1', false );
-	wp_enqueue_script( 'dbc-script', plugin_dir_url( __FILE__ ) . 'js/dbc.js', array('combobo'), rand(), true ); // REMOVE RAND BEFORE RELEASE!
+add_action( 'wp_enqueue_scripts', 'dbc_scripts_styles' );
+
+function dbc_scripts_styles() {
+	wp_register_style( 'dbc-style', plugin_dir_url( __FILE__ ) . 'css/dbc.css', null, rand() ); // REMOVE RAND BEFORE RELEASE!
+	wp_register_script( 'combobo', 'https://unpkg.com/combobo@2.0.1/dist/combobo.js#addsri=sha384-Wi4+N8V0Z6wGoSZO9v6BJtfdBVOWZPUOueHKSQ6UKforJpdw9Ic/GmkszhdKBIUi', array(), '2.0.1', false );
+	wp_register_script( 'dbc-script', plugin_dir_url( __FILE__ ) . 'js/dbc.js', array('combobo'), rand(), true ); // REMOVE RAND BEFORE RELEASE!
 }
 
-
-// [bartag foo="foo-value"]
-// function dbc_output_func( $atts ) {
-// 	$a = shortcode_atts( array(
-// 		'foo' => 'something',
-// 		'bar' => 'something else',
-// 	), $atts );
-
-// 	$output = file_get_contents( plugin_dir_path( __FILE__ ) . 'content.html' );
-
-// 	return $output;
-// }
-// add_shortcode( 'outputtest', 'dbc_output_func' );
+/**
+ * Register [dbc] shortcode
+ * 
+ * Main wrapper shortcode with single 'label' attribute
+ * which allows main container label to be set
+ */
+add_shortcode( 'dbc', 'dbc_dbc_shortcode_func' );
 
 function dbc_dbc_shortcode_func( $atts, $content = null ) {
 	$a = shortcode_atts( array(
 		'label' => 'I would like to graduate with a degree in:'
 	), $atts );
 
-	$output = '<div class="dbc"><label for="dbc-combobox">' . $a['label'] . '</label>';
-	$output .= do_shortcode( $content );
-	$output .= '</div>';
+	/**
+	 * Enqueue scripts and styles registered previously
+	 */
+	wp_enqueue_style( 'dbc-style' );
+	wp_enqueue_script( 'combobo' );
+	wp_enqueue_script( 'dbc-script' );
 
-	return $output;
+	$label = $a['label'];
+
+	ob_start();
+	require_once( plugin_dir_path( __FILE__ ) . 'templates/dbc.php' );
+	return ob_get_clean();
+	
 }
-add_shortcode( 'dbc', 'dbc_dbc_shortcode_func' );
 
-
+/**
+ * Add [dbc_options] shortcode to wrap combobox options
+ * 
+ * Options wrapper shortcode with 'button' and 'placeholder' attributes
+ * used to set the text of the CTA button, and the input placeholder
+ */
+add_shortcode( 'dbc_options', 'dbc_dbc_options_shortcode_func' );
 
 function dbc_dbc_options_shortcode_func( $atts, $content = null ) {
 	$a = shortcode_atts( array(
-		'foo' => 'something',
-		'bar' => 'something else',
+		'button' => 'Go',
+		'placeholder' => 'Search for or select an option',
 	), $atts );
 
-	$output = '<div class="input-group input-group-lg">';
-	$output .= '<div class="combo-wrap">';
-	$output .= '<input type="text" class="combobox form-control" id="dbc-combobox">';
-	$output .= '<div class="listbox" aria-labelledby="dbc-combobox">';
-	$output .= do_shortcode( $content );
-	$output .= '</div></div>';
-	$output .= '<span class="input-group-btn">';
-	$output .= '<button type="button" class="btn btn-default trigger" aria-hidden="true" id="dbc-combobox-trigger"><span class="glyphicon glyphicon-menu-down" data-trigger="dbc-combobox"></span></button>';
-	$output .= '<button type="button" class="btn btn-success disabled" id="dbc-combobox-action">Go!</button>';
-	$output .= '</span></div>';
+	$button = $a['button'];
+	$placeholder = $a['placeholder'];
 
-	return $output;
+	ob_start();
+	require_once( plugin_dir_path( __FILE__ ) . 'templates/dbc_options.php' );
+	return ob_get_clean();
 }
-add_shortcode( 'dbc_options', 'dbc_dbc_options_shortcode_func' );
 
-
+/**
+ * Add [dbc_option] shortcode used for individual combobox options
+ * 
+ * Has 'title' and 'content_id' attributes, which accept the title of
+ * the combobox option (displayed), and the ID to target for content to display
+ * Does not accept content
+ */
+add_shortcode( 'dbc_option', 'dbc_dbc_option_shortcode_func' );
 
 function dbc_dbc_option_shortcode_func( $atts, $content = null ) {
 	$a = shortcode_atts( array(
@@ -96,60 +101,34 @@ function dbc_dbc_option_shortcode_func( $atts, $content = null ) {
 		'content_id' => '',
 	), $atts );
 
-	$output = '<div class="option" ' . ( $a['content_id'] ? 'data-target="' . $a['content_id'] . '"' : '') . '>';
-	$output .= $a['title'];
-	$output .= '</div>';
+	$title = $a['title'];
+	$content_id = $a['content_id'];
 
-	return $output;
+	if ( '' != $title && '' != $content_id ) {
+		ob_start();
+		require( plugin_dir_path( __FILE__ ) . 'templates/dbc_option.php' );
+		return ob_get_clean();
+	}
 
 }
-add_shortcode( 'dbc_option', 'dbc_dbc_option_shortcode_func' );
 
-
+/**
+ * Add [dbc_content] shortcode to wrap content
+ * 
+ * Has 'id' attribute, used to set element ID.
+ * Should be unique, but this is not enforced
+ */
+add_shortcode( 'dbc_content', 'dbc_dbc_content_shortcode_func' );
 
 function dbc_dbc_content_shortcode_func( $atts, $content = null ) {
 	$a = shortcode_atts( array(
 		'id' => '',
 	), $atts );
 
-
-	return '<div id="' . $a['id'] . '" class="dbc-content">' . do_shortcode( $content ) . '</div>';
+	$id = $a['id'];
+	if ( '' != $id ) {
+		ob_start();
+		require( plugin_dir_path( __FILE__ ) . 'templates/dbc_content.php' );
+		return ob_get_clean();
+	}
 }
-add_shortcode( 'dbc_content', 'dbc_dbc_content_shortcode_func' );
-
-
-/*
-<section class="dbc">
-	<label for="dbc-combobox">I would like to graduate with a degree in: </label>
-	<div class="input-group input-group-lg">
-		<div class="combo-wrap">
-			<input type="text" class="combobox form-control" id="dbc-combobox">
-
-			<div class="listbox" aria-labelledby='dbc-combobox'>
-				<div class="option" data-target="dbc-content-shirts">Shirts</div>
-				<div class="option" data-target="dbc-content-shorts">Shorts</div>
-				<div class="option">Pants</div>
-				<div class="option">Socks</div>
-			</div>
-
-		</div>
-		<span class="input-group-btn">
-			<button type="button" class="btn btn-default trigger" aria-hidden="true" id="dbc-combobox-trigger"><span class="glyphicon glyphicon-menu-down" data-trigger="dbc-combobox"></span></button>
-			<button type="button" class="btn btn-primary" id="dbc-combobox-action">Submit</button>
-		</span>
-	</div>
-	<hr>
-	<div class="well dbc-content" id="dbc-content-shorts">
-		<h2>Cool Shorts Yo</h2>
-		<p>Wow... shorts</p>
-	</div>
-	<div class="well dbc-content" id="dbc-content-shirts">
-		<h2>Cool Shirts Yo</h2>
-		<p>Wow... shirts</p>
-	</div>
-	<div class="well dbc-content" id="dbc-content-default">
-		<h2>Default, man</h2>
-		<p>Stuff n stuff</p>
-	</div>
-</section>
-*/
