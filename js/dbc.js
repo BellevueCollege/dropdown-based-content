@@ -73,13 +73,12 @@ combobo
 		var targetID = e.option.getAttribute('data-target') ? e.option.getAttribute('data-target') : 'dbc-content-default';
 		var submitButton = document.getElementById('dbc-combobox-action');
 		submitButton.setAttribute('data-target', targetID);
-		submitButton.classList.remove('disabled');
-
+		submitButton.removeAttribute('disabled');
 	})
 	.on('deselection', function () {
 		var submitButton = document.getElementById('dbc-combobox-action');
 		submitButton.removeAttribute('data-target');
-		submitButton.classList.add('disabled');
+		submitButton.setAttribute('disabled', 'disabled');
 	});
 
 

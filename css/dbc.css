@@ -68,3 +68,7 @@
 .dbc-content.open {
 	display: block;
 }
+
+h2 label {
+	font-weight: normal;
+}

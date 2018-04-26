@@ -9,10 +9,10 @@ defined( 'ABSPATH' ) || exit; ?>
 			<?php echo do_shortcode( $content ); ?>
 		</div>
 	</div>
-	<span class="input-group-btn">';
-		<button type="button" class="btn btn-default trigger" aria-hidden="true" id="dbc-combobox-trigger" tabindex="-1">
+	<span class="input-group-btn">
+		<button type="button" class="btn btn-default trigger" aria-hidden="true" id="dbc-combobox-trigger">
 			<span class="glyphicon glyphicon-menu-down" data-trigger="dbc-combobox"></span>
 		</button>
-		<button type="button" class="btn btn-success disabled" id="dbc-combobox-action"><?php echo $button; ?></button>
+		<button type="button" class="btn btn-success" id="dbc-combobox-action" disabled="disabled"><?php echo $button; ?></button>
 	</span>
 </div>
