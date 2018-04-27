@@ -1,22 +1,22 @@
 .listbox {
-	display: none;
 	position: absolute;
 	top: 46px; /* the height of the input */
 	left: 6px;
-
-	width: 500px;
+	width: 500px; /* base width- set by JS later */
 	box-sizing: border-box;
+	
+	max-height: 250px;
+	overflow-y: auto;
+
 	background: #fff;
-	z-index: 99;
-	text-align: left;
 	box-shadow: 0 6px 12px rgba(0,0,0,.175);
 	border: 1px solid #ccc;
 	border-bottom-left-radius: 6px;
 	border-bottom-right-radius: 6px;
-
 	border-top-width: 0;
-	max-height: 250px;
-	overflow-y: auto;
+
+	z-index: 99;
+	display: none;
 }
 
 .listbox.open {
@@ -32,6 +32,7 @@
 	color: #000;
 	background-color: #A7A9AC;
 }
+
 .listbox .option.selected::before {
 	margin-left: -1rem;
 	width: 1.5rem;
@@ -65,6 +66,7 @@
 .dbc-content {
 	display: none;
 }
+
 .dbc-content.open {
 	display: block;
 }
