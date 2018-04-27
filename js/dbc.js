@@ -12,10 +12,16 @@ var combobo = new Combobo({
 	useLiveRegion: true,
 	multiselect: false,
 	noResultsText: 'no results',
-	selectionValue: (selecteds) => selecteds.map((s) => s.innerText.trim()).join(' - '),
+	selectionValue: function (selecteds) {
+		return selecteds.map( function(s) {
+			return s.innerText.trim();
+		}).join(' - ')
+	},
 	optionValue: 'underline', // wrap the matched portion of the option (if applicable) in a span with class "underline"
 	announcement: {
-		count: (n) => `${n} options available`,
+		count: function(n) {
+			return n + ' options available'
+		},
 		selected: 'Selected.'
 	},
 	filter: 'contains', // 'starts-with', 'equals', or funk
