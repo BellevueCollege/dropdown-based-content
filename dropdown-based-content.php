@@ -11,6 +11,14 @@ GitHub Plugin URI: BellevueCollege/dropdown-based-content
 defined( 'ABSPATH' ) || exit;
 
 /**
+ * Block Initializer.
+ * 
+ * Structure based on Create Guten Block plugin
+ */
+require_once plugin_dir_path( __FILE__ ) . 'src/init.php';
+
+
+/**
  * Add Subresource Integrity - adapted from https://ikreativ.com/async-with-wordpress-enqueue/
  *
  * Allow insertion of SRI integrity tag. Add #addsri=HASH to add this feature.
@@ -31,7 +39,7 @@ function dbc_add_sri( $url ) {
 add_action( 'wp_enqueue_scripts', 'dbc_scripts_styles' );
 
 function dbc_scripts_styles() {
-	wp_register_style( 'dbc-style', plugin_dir_url( __FILE__ ) . 'css/dbc.css', null, rand() ); // REMOVE RAND BEFORE RELEASE!
+	wp_register_style( 'bc_dbc-cgb-style-css', plugin_dir_url( __FILE__ ) . 'dist/blocks.style.build.css', null, rand() ); // REMOVE RAND BEFORE RELEASE!
 	wp_register_script( 'combobo', 'https://unpkg.com/combobo@2.0.1/dist/combobo.js#addsri=sha384-Wi4+N8V0Z6wGoSZO9v6BJtfdBVOWZPUOueHKSQ6UKforJpdw9Ic/GmkszhdKBIUi', array(), '2.0.1', false );
 	wp_register_script( 'dbc-script', plugin_dir_url( __FILE__ ) . 'js/dbc.js', array('combobo'), rand(), true ); // REMOVE RAND BEFORE RELEASE!
 }
@@ -52,7 +60,7 @@ function dbc_dbc_shortcode_func( $atts, $content = null ) {
 	/**
 	 * Enqueue scripts and styles registered previously
 	 */
-	wp_enqueue_style( 'dbc-style' );
+	wp_enqueue_style( 'bc_dbc-cgb-style-css' );
 	wp_enqueue_script( 'combobo' );
 	wp_enqueue_script( 'dbc-script' );
 

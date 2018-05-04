@@ -49,4 +49,10 @@ The following shortcodes and attributes are available:
 ```
 
 ## Gutenberg
-A gutenberg-based system for using this is on the way!
+This project's Gutenberg functionality is based on [Ahmad Awais's Create Guten Block framework](https://github.com/ahmadawais/create-guten-block).
+
+Available commands as part of this are:
+* `npm start` - Watch folders and compile
+* `npm run build` - Compile for production use
+
+`npm install` should be used to set up this project. Node and NPM are required.
