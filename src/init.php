@@ -28,6 +28,8 @@ function bc_dbc_cgb_block_assets() {
 		array( 'wp-blocks' ) // Dependency to include the CSS after it.
 		// filemtime( plugin_dir_path( __DIR__ ) . 'dist/blocks.style.build.css' ) // Version: filemtime — Gets file modification time.
 	);
+	wp_enqueue_script( 'combobo' );
+	wp_enqueue_script( 'dbc-script' );
 } // End function bc_dbc_cgb_block_assets().
 
 // Hook: Frontend assets.
