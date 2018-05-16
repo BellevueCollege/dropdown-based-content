@@ -4,7 +4,7 @@ Plugin Name: Dropdown Based Content
 Plugin URI: https://github.com/BellevueCollege/dropdown-based-content
 Description: Show content based on a combobox or dropdown selection
 Author: Bellevue College Integration Team
-Version: 0.0.0.1
+Version: 1
 Author URI: http://www.bellevuecollege.edu
 GitHub Plugin URI: BellevueCollege/dropdown-based-content
 */
@@ -31,9 +31,10 @@ function dbc_add_sri( $url ) {
 add_action( 'wp_enqueue_scripts', 'dbc_scripts_styles' );
 
 function dbc_scripts_styles() {
-	wp_register_style( 'dbc-style', plugin_dir_url( __FILE__ ) . 'css/dbc.css', null, rand() ); // REMOVE RAND BEFORE RELEASE!
+	$ver = '1';
+	wp_register_style( 'dbc-style', plugin_dir_url( __FILE__ ) . 'css/dbc.css', null, $ver );
 	wp_register_script( 'combobo', 'https://unpkg.com/combobo@2.0.1/dist/combobo.js#addsri=sha384-Wi4+N8V0Z6wGoSZO9v6BJtfdBVOWZPUOueHKSQ6UKforJpdw9Ic/GmkszhdKBIUi', array(), '2.0.1', false );
-	wp_register_script( 'dbc-script', plugin_dir_url( __FILE__ ) . 'js/dbc.js', array('combobo'), rand(), true ); // REMOVE RAND BEFORE RELEASE!
+	wp_register_script( 'dbc-script', plugin_dir_url( __FILE__ ) . 'js/dbc.js', array('combobo'), $ver, true );
 }
 
 /**
